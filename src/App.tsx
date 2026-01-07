@@ -26,8 +26,9 @@ export const App: React.FC = () => {
   const [sortField, setSortField] = useState<SortType>(SortType.none);
   const [visibleGoods, setVisibleGoods] = useState([...goodsFromServer]);
   const [isReverseGoods, setIsReverseGoods] = useState(false);
+  const isModified = sortField !== SortType.none || isReverseGoods;
 
-  const getSortGoods = (fieldSort: SortType) => {
+  const handleSort = (fieldSort: SortType) => {
     setSortField(fieldSort);
     const sortedGoods = [...goodsFromServer];
 
@@ -66,7 +67,7 @@ export const App: React.FC = () => {
             button is-info
             ${sortField === SortType.alphabet ? '' : 'is-light'}
           `}
-          onClick={() => getSortGoods(SortType.alphabet)}
+          onClick={() => handleSort(SortType.alphabet)}
         >
           Sort alphabetically
         </button>
@@ -77,7 +78,7 @@ export const App: React.FC = () => {
             button is-success
             ${sortField === SortType.length ? '' : 'is-light'}
           `}
-          onClick={() => getSortGoods(SortType.length)}
+          onClick={() => handleSort(SortType.length)}
         >
           Sort by length
         </button>
@@ -93,7 +94,7 @@ export const App: React.FC = () => {
           Reverse
         </button>
 
-        {JSON.stringify(visibleGoods) !== JSON.stringify(goodsFromServer) && (
+        {isModified && (
           <button
             type="button"
             className="button is-danger"
